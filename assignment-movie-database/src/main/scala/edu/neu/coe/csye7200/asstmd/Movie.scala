@@ -98,7 +98,7 @@ object Movie extends App {
       * @param w a line of input.
       * @return a Try[Movie]
       */
-    def parse(w: String): Try[Movie] = ??? // TO BE IMPLEMENTED
+    def parse(w: String): Try[Movie] = Try(Movie(w.split(",")))
   }
 
   val ingester = new Ingest[Movie]()
@@ -119,9 +119,7 @@ object Movie extends App {
   def elements(list: Seq[String], indices: Int*): List[String] = {
     // Hint: form a new list which is consisted by the elements in list in position indices. Int* means array of Int.
     // 6 points
-    val result: Seq[String] =
-    // TO BE IMPLEMENTED
-    ???
+    val result: Seq[String] = for (i <- indices) yield list(i)
     result.toList
   }
 
@@ -201,7 +199,12 @@ object Rating {
     */
   // Hint: This should similar to apply method in Object Name. The parameter of apply in case match should be same as case class Rating
   // 13 points
-  def apply(s: String): Rating = ??? // TO BE IMPLEMENTED
+  def apply(s: String): Rating = (for (ws <- rRating.unapplySeq(s)) yield for (w <- ws) yield Option(w)) match {
+    // Match the code from Option[String]. Since the rating might not have an age suffix,
+    // match Option[String], get the string and convert to Option[Int]
+    case Some(Seq(Some(code), _, age)) => Rating(code, age.flatMap(_.toIntOption))
+    case error => throw ParseException(s"parse error in Rating: $s, (parsed as $error)")
+  }
 
 }
 
