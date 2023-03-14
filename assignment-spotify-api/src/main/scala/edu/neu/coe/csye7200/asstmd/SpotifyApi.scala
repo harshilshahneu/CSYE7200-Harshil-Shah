@@ -38,7 +38,7 @@ object MyJsonProtocol extends DefaultJsonProtocol {
 }
 
 object SpotifyApi extends App {
-    val OAuth = "Bearer insert_your_token_here"
+    val OAuth = "Bearer BQAjx21DmPsCEbW_KqKp61724PueJRY90rJO9G9DtMPR-xPLW2Ej6DHs12GxMcQfOXPINNuVHu_KIhxr31hctxfBRVJT56v7wCeyM-DU-tDoSyUQE_BwRW-mRwyp3hAOgm53IPs8NM2jFCccOZLq1ZvlrzyF5QsLAmNBW1IukpR5NpjiHUQT"
     val url = "https://api.spotify.com/v1/playlists/5Rrf7mqN8uus2AaQQQNdc1/tracks?offset=0&limit=100"
     val headers = Map(
         "Authorization" -> OAuth,
@@ -76,5 +76,5 @@ object SpotifyApi extends App {
 
     val sortedArtists = top10LongestTracksWithArtists.flatMap(_._2).map(_._1).distinct.sortBy(_.followers.getOrElse(0))(Ordering.Int.reverse)
     println("------------")
-    sortedArtists.foreach(artist => println(s"Name: ${artist.name}, Followers: ${artist.followers}"))
+    sortedArtists.foreach(artist => println(s"Name: ${artist.name}, Followers: ${artist.followers.getOrElse(0)}"))
 }
