@@ -38,7 +38,7 @@ object MyJsonProtocol extends DefaultJsonProtocol {
 }
 
 object SpotifyApi extends App {
-    val OAuth = "Bearer BQAjx21DmPsCEbW_KqKp61724PueJRY90rJO9G9DtMPR-xPLW2Ej6DHs12GxMcQfOXPINNuVHu_KIhxr31hctxfBRVJT56v7wCeyM-DU-tDoSyUQE_BwRW-mRwyp3hAOgm53IPs8NM2jFCccOZLq1ZvlrzyF5QsLAmNBW1IukpR5NpjiHUQT"
+    val OAuth = "Bearer your-oauth-token-here"
     val url = "https://api.spotify.com/v1/playlists/5Rrf7mqN8uus2AaQQQNdc1/tracks?offset=0&limit=100"
     val headers = Map(
         "Authorization" -> OAuth,
