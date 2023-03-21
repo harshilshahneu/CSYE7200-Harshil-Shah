@@ -139,15 +139,20 @@ object WebCrawler extends App {
     def wget(url: URL)(implicit ec: ExecutionContext): Future[Seq[URL]] = {
         // Hint: write as a for-comprehension, using the method createURL(Option[URL], String) to get the appropriate URL for relative links
         // 16 points.
-        def getURLs(ns: Node): Seq[Try[URL]] = ??? // TO BE IMPLEMENTED
+        def getURLs(ns: Node): Seq[Try[URL]] = {
+            for {n <- ns \\ "a"; nh <- n \ "@href"} yield validateURL(createURL(Some(url), nh.toString))
+        } 
 
         def getLinks(g: String): Try[Seq[URL]] = {
-            val ny: Try[Node] = HTMLParser.parse(g) recoverWith { case f => Failure(new RuntimeException(s"parse problem with URL $url: $f")) }
-            for (n <- ny; uys = getURLs(n); us <- MonadOps.sequenceForgiveSubsequent(uys) { case _: WebCrawlerProtocolException => true; case _ => false }) yield us
+            val newY: Try[Node] = HTMLParser.parse(g) recoverWith { case f => Failure(new RuntimeException(s"parse problem with URL $url: $f")) }
+            for (n <- newY; uys = getURLs(n); us <- MonadOps.sequenceForgiveSubsequent(uys) { case _: WebCrawlerProtocolException => true; case _ => false }) yield us
         }
         // Hint: write as a for-comprehension, using getURLContent (above) and getLinks above. You will also need MonadOps.asFuture
         // 9 points.
-        ??? // TO BE IMPLEMENTED
+        for (
+            urlContent <- getURLContent(url); 
+            us <- MonadOps.asFuture(getLinks(urlContent))
+        ) yield us
     }
 
     /**
