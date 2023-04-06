@@ -21,19 +21,19 @@ object Titanic extends App {
   trainDf.printSchema() // Print the schema of the dataset
   trainDf.describe().show() // Compute basic statistics for each column
 
-  // Compute the count of each categorical value in the Pclass column
+  // Count of each categorical value in the Pclass column
   trainDf.groupBy("Pclass").count().show()
 
-  // Compute the count of each categorical value in the Embarked column
+  // Count of each categorical value in the Embarked column
   trainDf.groupBy("Embarked").count().show()
 
-  // Compute the mean age of passengers by sex and class
+  // Mean age of passengers by sex and class
   trainDf.groupBy("Sex", "Pclass")
     .agg(avg("Age").alias("mean_age"))
     .show()
 
 
-  /** Attribute Engineering */
+  /** Feature Engineering */
   // Extract the titles from the Name column and create a new column called Title
   val titleRegex = """([\w]+)\. """.r
   val getTitle = udf((name: String) => titleRegex.findFirstMatchIn(name).map(_.group(1)).getOrElse(""))
